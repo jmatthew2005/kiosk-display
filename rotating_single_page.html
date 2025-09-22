@@ -1,33 +1,29 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Rotating External Pages</title>
-    <script>
-        const urls = [
-            "https://support.cetcloud.org.uk/dashboard?id=26&publishedid=9e5f5471-48b7-4966-a870-c1c49401cede",
-            "https://monitoring.cetcloud.org.uk/CET/check_mk/index.py?start_url=%2FCET%2Fcheck_mk%2Fview.py%3Fview_name%3Dcmk_printer"
-        ];
-        let index = 0;
-
-        function rotate() {
-            window.location.href = urls[index];
-            index = (index + 1) % urls.length;
-            localStorage.setItem('nextIndex', index);
-        }
-
-        window.onload = function() {
-            const savedIndex = localStorage.getItem('nextIndex');
-            if (savedIndex !== null) {
-                index = parseInt(savedIndex);
-            }
-            setTimeout(rotate, 10000);
-        }
-    </script>
+  <meta charset="UTF-8">
+  <title>URL Rotator</title>
+  <style>
+    html, body, iframe { height: 100%; width: 100%; margin: 0; padding: 0; border: none; }
+    iframe { display: block; }
+  </style>
+  <script>
+    const urls = [
+      "https://monitoring.cetcloud.org.uk/CET/check_mk/index.py?start_url=%2FCET%2Fcheck_mk%2Fview.py%3Fview_name%3Dcmk_printer",
+      "https://support.cetcloud.org.uk/dashboard?id=26&publishedid=9e5f5471-48b7-4966-a870-c1c49401cede"
+    ];
+    let current = 0;
+    function rotate() {
+      current = (current + 1) % urls.length;
+      document.getElementById('rotator').src = urls[current];
+    }
+    window.onload = function() {
+      document.getElementById('rotator').src = urls[0];
+      setInterval(rotate, 2000);
+    }
+  </script>
 </head>
 <body>
-    <h1>Rotating Between Dashboards</h1>
-    <p>This page will redirect between two external dashboards every 10 seconds.</p>
+  <iframe id="rotator"></iframe>
 </body>
 </html>
